@@ -2,12 +2,12 @@ package com.yedam.project.Main;
 
 public class MemVO {
 
-	// Ä¸½¶È­ ÇÊµå
-	private int mem_num;        // È¸¿ø¹øÈ£
-	private String name; 		// È¸¿ø ÀÌ¸§		
-	private String phoneNum;    // È¸¿ø ÀüÈ­¹øÈ£
-	private String email;		// È¸¿ø ÀÌ¸ÞÀÏ
-	private String address;		// È¸¿ø ÁÖ¼Ò
+	// Ä¸ï¿½ï¿½È­ ï¿½Êµï¿½
+	private int mem_num;        // È¸ï¿½ï¿½ï¿½ï¿½È£
+	private String name; 		// È¸ï¿½ï¿½ ï¿½Ì¸ï¿½		
+	private String phoneNum;    // È¸ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½È£
+	private String email;		// È¸ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½
+	private String address;		// È¸ï¿½ï¿½ ï¿½Ö¼ï¿½
 	
 	
 	public int getMem_num() {

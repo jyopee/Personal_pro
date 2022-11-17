@@ -2,34 +2,45 @@ package com.yedam.project.Main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 
 import com.yedam.project.DB.ConnDB;
 
 public class MemDAOfunc extends ConnDB implements MemDAO {
-	private static MemDAO instance = null; // ÀÎ½ºÅÏ½º »ı¼º
+	private static MemDAO instance = null; // ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	public static MemDAO getInstance() {
-		if (instance == null) // ÀÎ½ºÅÏ½º°¡ »ı¼ºµÈÀûÀÌ ¾øÀ¸¸é
-			instance = new MemDAOfunc(); // »õ·Î¸¸µç ÀÎ½ºÅÏ½º¸¦ ³Ñ°ÜÁÖ°í
-		return instance; // ºó°Ô ¾Æ´Ï¸é ±âÁ¸¿¡ °®°íÀÖ´Â°É ³Ñ°ÜÁÖ°Ú´Ù.
+		if (instance == null) // ï¿½Î½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			instance = new MemDAOfunc(); // ï¿½ï¿½ï¿½Î¸ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ö°ï¿½
+		return instance; // ï¿½ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´Â°ï¿½ ï¿½Ñ°ï¿½ï¿½Ö°Ú´ï¿½.
 	}
 
 	@Override
 	public List<MemVO> selectAll() {
 		List<MemVO> list = new ArrayList<>();
 		try {
-			connect();						//DB ¿¬°á
-			stmt = conn.createStatement();      //µ¥ÀÌÅÍº£ÀÌ½º·Î SQL ¹®À» º¸³»±â À§ÇÑ SQLServerStatement °³Ã¼¸¦ ¸¸µì´Ï´Ù.
+			connect(); // DB ï¿½ï¿½ï¿½ï¿½
+			stmt = conn.createStatement(); // ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ SQL ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ SQLServerStatement ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
 			String sql = "SELECT * FROM Management";
 			rs = stmt.executeQuery(sql);
-			while(true) {
-				
+
+			int index = 0;
+			while (rs.next()) {
+				MemVO memVO = new MemVO();
+				memVO.setMem_num(rs.getInt(("mem_num")));
+				memVO.setName(rs.getString("name"));
+				memVO.setPhoneNum(rs.getString("phoneNum"));
+				memVO.setEmail(rs.getString("email"));
+				memVO.setAddress(rs.getString("address"));
+
+				list.add(memVO);
+				index++;
 			}
-			
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			disconnect();
 		}
 		return list;
@@ -37,13 +48,61 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 
 	@Override
 	public MemVO select(MemVO memVO) {
-		// TODO Auto-generated method stub
-		return null;
+		MemVO findVO = null;
+		try {
+			Scanner input = new Scanner(System.in);
+			System.out.println("ê²€ìƒ‰í•˜ê³ ì í•˜ëŠ” íšŒì› ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
+			int mem_num =input.nextInt();
+			connect();
+			stmt = conn.createStatement();
+			/* ê²€ìƒ‰ì¡°ê±´ì„ empNoë¥¼ ì“¸ê²ƒì´ê¸° ë•Œë¬¸ì— */
+
+//			String sql = "SELECT * FROM employees WHERE emp_no = " + findVO.getMem_num();
+			String sql = "SELECT mem_num,name,phone_number,email,address WHERE mem_num =" + mem_num;
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()/* ê°’ì´ ì¡´ì¬í•˜ë©´ */) {
+				findVO.setMem_num(rs.getInt(("mem_num")));
+				findVO.setName(rs.getString("name"));
+				findVO.setPhoneNum(rs.getString("phoneNum"));
+				findVO.setEmail(rs.getString("email"));
+				findVO.setAddress(rs.getString("address"));
+			}
+		} catch (Exception e) {
+
+		} finally {
+			disconnect();
+		}
+		return findVO;
+
 	}
 
 	@Override
 	public void insert(MemVO memVO) {
-		// TODO Auto-generated method stub
+		try {
+			connect();
+			String sql = "INSERT INTO employees VALUES (?,?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, memVO.getMem_num());
+			pstmt.setString(2, memVO.getName());
+			pstmt.setString(3, memVO.getPhoneNum());
+			pstmt.setString(4, memVO.getEmail());
+			pstmt.setString(5, memVO.getAddress());
+			// ì—¬ê¸°ê¹Œì§€ëŠ” SQL ë¬¸ì¥ì„ ë³´ë‚¼ìˆ˜ìˆê²Œ ëœê²ƒ
+
+			// ì‹¤í–‰í•¨
+			int result = pstmt.executeUpdate();
+
+			if (result > 0/* ëª‡ê° ì§„ ëª°ë¼ë„ ì¼ë‹¨ ë“±ë¡ë˜ì—ˆë‹¤ëŠ”ê²ƒ */) {
+				System.out.println("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
+			} else {
+				System.out.println("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
 
 	}
 
@@ -59,8 +118,8 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 			connect();
 			stmt = conn.createStatement();
 			String sql = "DELETE FROM Management WHERE mem_num = " + mem_num;
-//			DELETE FROM Management WHERE mem_num = mem_num - Äõ¸® »ı¼º
-			int result = stmt.executeUpdate(sql); // Äõ¸®¸¦ ½ÇÇàÈÄ result °ª¿¡ ÀúÀå
+//			DELETE FROM Management WHERE mem_num = mem_num - ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			int result = stmt.executeUpdate(sql); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ result ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 		} catch (Exception e) {
 			e.printStackTrace();
