@@ -3,44 +3,58 @@ package com.yedam.project.Main;
 public class MemVO {
 
 	// ĸ��ȭ �ʵ�
-	private int mem_num;        // ȸ����ȣ
-	private String name; 		// ȸ�� �̸�		
-	private String phoneNum;    // ȸ�� ��ȭ��ȣ
-	private String email;		// ȸ�� �̸���
-	private String address;		// ȸ�� �ּ�
-	
-	
+	private int Mem_num; // 회원 번호(아이디)
+	private String Name; // 회원 이름
+	private String PhoneNum; // 회원 휴대전화
+	private String Email; // 회원 이메일
+	private String Address; // 회원 주소
+
 	public int getMem_num() {
-		return mem_num;
+		return Mem_num;
 	}
+
 	public void setMem_num(int mem_num) {
-		this.mem_num = mem_num;
+		Mem_num = mem_num;
 	}
+
 	public String getName() {
-		return name;
+		return Name;
 	}
+
 	public void setName(String name) {
-		this.name = name;
+		Name = name;
 	}
+
 	public String getPhoneNum() {
-		return phoneNum;
+		return PhoneNum;
 	}
+
 	public void setPhoneNum(String phoneNum) {
-		this.phoneNum = phoneNum;
+		PhoneNum = phoneNum;
 	}
+
 	public String getEmail() {
-		return email;
+		return Email;
 	}
+
 	public void setEmail(String email) {
-		this.email = email;
+		Email = email;
 	}
+
 	public String getAddress() {
-		return address;
+		return Address;
 	}
+
 	public void setAddress(String address) {
-		this.address = address;
+		Address = address;
 	}
+
 	
-	
-	
+	@Override
+	public String toString() {
+		return "MemVO [Mem_num=" + Mem_num + ", Name=" + Name + ", PhoneNum=" + PhoneNum + ", Email=" + Email
+				+ ", Address=" + Address  + "]";
+
+	}
+
 }

@@ -2,17 +2,21 @@ package com.yedam.project.Main;
 
 import java.util.List;
 
-public interface MemDAO { //Å×ÀÌºí Á¢±ÙÀ» À§ÇÑ ÀÎÅÍÆäÀÌ½º
+public interface MemDAO { //ë°ì´í„°ë² ì´ìŠ¤ ë©”ì†Œë“œ
 	
 	
-	List<MemVO> selectAll(); //ÀüÃ¼ Á¶È¸
+	List<MemVO> selectAll(); //ï¿½ï¿½Ã¼ ï¿½ï¿½È¸
 	
 	MemVO select(MemVO memVO);
 	
 	void insert(MemVO memVO);
 	
-	void update(MemVO memVO);
+	void update(String name,String email,String add,int num);
 	
 	void delete(int mem_num);
+	
+
+	
+	
 	
 }

@@ -9,17 +9,17 @@ import java.sql.Statement;
 
 public class ConnDB {
 
-	// µ¥ÀÌÅÍ ¿¬°á Á¤º¸
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	private String JdbcDriver = "org.sqlite.JDBC";
-	private String JdbcUrl = "jdbc:sqlite:D:/PesonalProject/Database/Management.db";
-
-	// ÇÊµå
+	private String JdbcUrl = "jdbc:sqlite:/D:/PesonalProject/Database/Management.db";
+	
+	// ï¿½Êµï¿½
 	protected Connection conn;
 	protected Statement stmt;
 	protected PreparedStatement pstmt;
 	protected ResultSet rs;
 
-	protected void connect() { // DB ¿¬°á
+	protected void connect() { // DB ï¿½ï¿½ï¿½ï¿½
 		try {
 			Class.forName(JdbcDriver);
 			conn = DriverManager.getConnection(JdbcUrl);
@@ -33,11 +33,11 @@ public class ConnDB {
 	protected void disconnect() {
 		try {
 				if(rs!= null) rs.close();
-				if(stmt!= null) rs.close();
-				if(pstmt!= null) rs.close();
-				if(conn!= null) rs.close();
+				if(stmt!= null) stmt.close();
+				if(pstmt!= null) pstmt.close();
+				if(conn!= null) conn.close();
 		}catch (SQLException e) {
-			System.out.println("DB°¡ Á¤»óÀûÀ¸·Î ÇØÃ¼µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+			System.out.println("ì—°ê²°ì´ ëŠí‚¤ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 		}
 	}
 
