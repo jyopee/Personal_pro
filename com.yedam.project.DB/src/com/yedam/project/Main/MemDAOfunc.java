@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.yedam.project.DB.ConnDB;
-import com.yedam.project.Login.Member;
+import com.yedam.project.login.LogVO;
 
 public class MemDAOfunc extends ConnDB implements MemDAO {
 	Scanner input = new Scanner(System.in);
@@ -32,6 +32,8 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 			int index = 0;
 			while (rs.next()) {
 				MemVO memVO = new MemVO();
+				LogVO logVO = new LogVO();
+				logVO.setMemberId("MemberId");
 				memVO.setMem_num(rs.getInt(("Mem_num")));
 				memVO.setName(rs.getString("Name"));
 				memVO.setPhoneNum(rs.getString("Phone_num"));
@@ -53,6 +55,8 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 	@Override
 	public MemVO select(MemVO memVO) {
 		MemVO findVO = null;
+		LogVO loVo = null;
+
 		try {
 			connect();
 			stmt = conn.createStatement();
@@ -62,6 +66,7 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 
 			if (rs.next()/* 값이 존재할 경우 */) {
 				findVO = new MemVO();
+
 				findVO.setMem_num(rs.getInt(("Mem_num")));
 				findVO.setName(rs.getString("Name"));
 				findVO.setPhoneNum(rs.getString("Phone_num"));
@@ -83,6 +88,7 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 			connect();
 			String sql = "INSERT INTO Member VALUES (?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
+
 			pstmt.setInt(1, memVO.getMem_num());
 			pstmt.setString(2, memVO.getName());
 			pstmt.setString(3, memVO.getPhoneNum());
@@ -114,7 +120,7 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 
 				connect();
 
-				String sql1 = "UPDATE Member SET ? name,Phone_num,Email,Address WHERE emp_no =?";
+				String sql1 = "UPDATE Member SET ? Name,Phone_num,Email,Address WHERE M_num =?";
 
 				pstmt = conn.prepareStatement(sql1);
 
@@ -154,7 +160,7 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM Member WHERE mem_num = " + mem_num;
+			String sql = "DELETE FROM Member WHERE M_num = " + mem_num;
 			int result = stmt.executeUpdate(sql); // 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 result 占쏙옙占쏙옙 占쏙옙占쏙옙
 
 			if (result > 0) {

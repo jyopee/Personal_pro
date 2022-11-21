@@ -3,25 +3,30 @@ package com.yedam.project.Main;
 import java.util.List;
 import java.util.Scanner;
 
+import com.yedam.project.login.LogVO;
+
+
+
 public class MemManagement {
 	Scanner input = new Scanner(System.in);
 
 	MemDAO memDAO = MemDAOfunc.getInstance(); // 인스턴스 생성
 	boolean loop = true;
 
-	public MemManagement() {
+	public void MemManagement() {
 
 		MenuPrint();
 	}
+
+	
 
 	public void MenuPrint() {
 
 		while (true) {
 
-			System.out.println("======================================");
-			System.out.println("|1. 회원등록 | 2.회원전체 조회 | 3.회원정보 조회");
-			System.out.println("|4. 회원정보 추가 | 5.회원정보 업데이트 | 6.회원정보 삭제 | 7.종료");
-			System.out.println("======================================");
+			System.out.println("==================================관 리 자==================================");
+			System.out.println("|1. 회원등록|2.회원전체 조회| 3.회원정보 조회|4. 회원정보 추가 | 5.회원정보 업데이트 | 6.회원정보 삭제 | 7.종료");
+			System.out.println("==========================================================================");
 
 			MenuSelect();
 		}
@@ -38,6 +43,9 @@ public class MemManagement {
 		return memVO;
 	}
 
+	
+	
+	
 	private MemVO InsertInput() {
 
 		System.out.println();
@@ -110,6 +118,7 @@ public class MemManagement {
 	private void InsertMem() {
 
 		System.out.println("추가 하고자 하는 회원 정보를 입력하세요");
+	
 		MemVO memVO = InsertInput();
 		memDAO.insert(memVO);
 
