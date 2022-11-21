@@ -65,6 +65,7 @@ public class UserDAOfunc extends ConnDB implements UserDAO {
 
 				findVO.setLectnum(rs.getInt(("Lectnum")));
 				findVO.setLectname(rs.getString("Lectname"));
+				findVO.setProff(rs.getString("Proff"));
 				findVO.setStunum(rs.getInt("Stunum"));
 				findVO.setStuname(rs.getString("Stuname"));
 
@@ -77,51 +78,22 @@ public class UserDAOfunc extends ConnDB implements UserDAO {
 		return findVO;
 
 	}
-	
-	public UserVO selectLect () {
-		
-	}
 
 	@Override
-	public void insert(UserVO userVO) {
-		try {
-			connect();
-			String sql = "INSERT INTO ClassRegist VALUES (?,?,?)";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(2, userVO.getLectname());
-			pstmt.setInt(3, userVO.getStunum());
-			pstmt.setString(4, userVO.getStuname());
-
-			int result = pstmt.executeUpdate();
-
-			if (result > 0) {
-				System.out.println("성공적으로 추가되었습니다.");
-			} else {
-				System.out.println("INSERT에 실패했습니다.");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			disconnect();
-		}
-
-	}
-
-	@Override
-	public void update(String lectname, String Stuname, String Stunum, int lectnum) {
+	public void update(UserVO userVO, int Stunum) {
 		int result;
 		try {
 
 			connect();
 
-			String sql1 = "UPDATE ClassRegist SET LectName= ? ,Stunum = ? ,Stuname = ? WHERE lectnum =?";
+			String sql1 = "UPDATE ClassRegist SET lectNum = ? ,LectName = ? ,Proff = ? WHERE Stunum = ?";
 
 			pstmt = conn.prepareStatement(sql1);
 
-			pstmt.setString(1, lectname);
-			pstmt.setString(2, Stuname);
-			pstmt.setString(3, Stunum);
-			pstmt.setInt(4, lectnum);
+			pstmt.setString(1, userVO.getLectname());
+			pstmt.setInt(2, userVO.getLectnum());
+			pstmt.setInt(3, Stunum);
+			pstmt.setInt(4, Stunum);
 
 			result = pstmt.executeUpdate();
 
@@ -139,8 +111,53 @@ public class UserDAOfunc extends ConnDB implements UserDAO {
 	}
 
 	@Override
-	public void delete(int mem_num) {
-		// TODO Auto-generated method stub
+	public void delete(int lectnum) {
+
+		try {
+			connect();
+			stmt = conn.createStatement();
+			String sql = "DELETE FROM ClassRegist WHERE lectnum = " + lectnum;
+			int result = stmt.executeUpdate(sql); // 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 result 占쏙옙占쏙옙 占쏙옙占쏙옙
+
+			if (result > 0) {
+				System.out.println("정상적으로 삭제되었습니다.");
+			} else {
+				System.out.println("정상적으로 삭제되지 않았습니다.");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+
+	}
+
+	@Override
+	public UserVO select2(int LectNum) {
+		UserVO findVO = null;
+
+		try {
+			connect();
+			stmt = conn.createStatement();
+
+			String sql = "SELECT * from Lectname WHERE LectNum  =" + LectNum;
+
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()/* 값이 존재할 경우 */) {
+				findVO = new UserVO();
+				findVO.setLectnum(rs.getInt("LectNum"));
+				findVO.setLectName(rs.getString("LectName"));
+				findVO.setProfessor(rs.getString("Professor"));
+
+			}
+		} catch (Exception e) {
+
+		} finally {
+			disconnect();
+		}
+		return findVO;
 
 	}
 

@@ -10,6 +10,17 @@ public class UserVO {
 
 	private int Lectnum;
 	private String Lectname;
+	private String Proff;
+	public String getProff() {
+		return Proff;
+	}
+
+
+	public void setProff(String proff) {
+		Proff = proff;
+	}
+
+
 	private String Stuname;
 	private int Stunum;
 
@@ -86,8 +97,9 @@ public class UserVO {
 
 	@Override
 	public String toString() {
-		return "UserVO [LecNum=" + LectNum + ", LecName=" + LectName + ", professor=" + Professor + ", Lecnum=" + Lectnum
-				+ ", lecname=" + Lectname + ", Stuname=" + Stuname + ", Stunum=" + Stunum + "]";
+		return "UserVO [LectNum=" + LectNum + ", LectName=" + LectName + ", Professor=" + Professor + ", Lectnum="
+				+ Lectnum + ", Lectname=" + Lectname + ", Proff=" + Proff + ", Stuname=" + Stuname + ", Stunum="
+				+ Stunum + "]";
 	}
 
 }

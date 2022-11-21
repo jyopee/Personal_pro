@@ -7,6 +7,10 @@ import com.yedam.project.login.LogVO;
 import com.yedam.project.login.LoginMainCL;
 
 public class MemManagement {
+
+	protected int num;
+	protected String name;
+
 	Scanner input = new Scanner(System.in);
 
 	MemDAO memDAO = MemDAOfunc.getInstance(); // 인스턴스 생성
@@ -109,6 +113,9 @@ public class MemManagement {
 
 		MemVO findmem = Input();
 		MemVO findVO = memDAO.select(findmem);
+
+		this.num = findVO.getMem_num();
+		this.name = findVO.getName();
 
 		if (findVO == null) {
 			System.out.println("결과가 존재하지 않습니다.");

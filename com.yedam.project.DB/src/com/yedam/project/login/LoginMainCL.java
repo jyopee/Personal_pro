@@ -3,12 +3,15 @@ package com.yedam.project.login;
 import java.util.Scanner;
 
 import com.yedam.project.Main.MemManagement;
+import com.yedam.project.Main.MemVO;
 import com.yedam.project.userlec.UserManagement;
 
 public class LoginMainCL {
 
 	boolean loop = false;
 	private int role;
+	protected static int num;
+	protected static String name;
 	Scanner input = new Scanner(System.in);
 	LogDAO logDAO = LogDAOfunc.getInstance();
 
@@ -47,15 +50,18 @@ public class LoginMainCL {
 	public LogVO login() {
 		LogVO input = LoginInput();
 		LogVO info = logDAO.login(input);
+		System.out.println(info);
+
+		Save(info);
 
 		if (info == null) {
 			login();
 		} else if (info.getMemberId().equals("admin")) {
-			this.role = 0;
+
 			new MemManagement();
 
 		} else {
-			this.role = 1;
+
 			new UserManagement();
 
 		}
@@ -64,12 +70,18 @@ public class LoginMainCL {
 
 	}
 
+	public void Save(LogVO info) {
+
+		logDAO.Save(info);
+	}
+
 	public LogVO LoginInput() {
 		LogVO LogInput = new LogVO();
 		System.out.print("회원 아이디 :");
 		LogInput.setMemberId(input.nextLine());
 		System.out.print("비밀번호 :");
 		LogInput.setPasswd(input.nextLine());
+		System.out.println(LogInput);
 
 		return LogInput;
 	}

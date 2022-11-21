@@ -11,7 +11,8 @@ public class ConnDB {
 
 	// ������ ���� ����
 	private String JdbcDriver = "org.sqlite.JDBC";
-	private String JdbcUrl = "jdbc:sqlite:/D:/PesonalProject/Database/Management2.db";
+	private String JdbcUrl = "jdbc:sqlite:/D:/PersonalProject/Management2.db";
+	
 	
 	// �ʵ�
 	protected Connection conn;
