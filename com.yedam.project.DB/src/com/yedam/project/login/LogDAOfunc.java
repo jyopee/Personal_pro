@@ -7,7 +7,7 @@ import com.yedam.project.Main.MemManagement;
 
 public class LogDAOfunc extends ConnDB implements LogDAO {
 	private static LogDAO instance = null; // 인스턴스 생성
-	
+
 	public static LogDAO getInstance() {
 		if (instance == null) // 占싸쏙옙占싹쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙
 			instance = new LogDAOfunc(); // 占쏙옙占싸몌옙占쏙옙 占싸쏙옙占싹쏙옙占쏙옙 占싼곤옙占쌍곤옙
@@ -20,7 +20,7 @@ public class LogDAOfunc extends ConnDB implements LogDAO {
 		LogVO loginInfo = null;
 		try {
 			connect();
-			String sql = "SELECT * FROM Login WHERE MemberId = '" + logVO.getMemberId()+ "'";
+			String sql = "SELECT * FROM Member WHERE MemberId = '" + logVO.getMemberId() + "'";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 
@@ -28,7 +28,6 @@ public class LogDAOfunc extends ConnDB implements LogDAO {
 				// 아이디 존재
 				if (rs.getString("passwd").equals(logVO.getPasswd())) {
 					loginInfo = new LogVO();
-					loginInfo.setMem_num(rs.getInt("M_num"));
 					loginInfo.setMemberId(rs.getString("MemberId"));
 					loginInfo.setPasswd(rs.getString("passwd"));
 					System.out.println("로그인 되었습니다.");
@@ -47,36 +46,6 @@ public class LogDAOfunc extends ConnDB implements LogDAO {
 		}
 		return loginInfo;
 
-	}
-
-	@Override
-	public void check(LogVO logVO) {
-
-		LogVO loginInfo = null;
-		try {
-			connect();
-
-			String sql = "SELECT M_num FROM Login WHERE MemberId = 'admin' and M_num =" + logVO.getMem_num();
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			
-			System.out.println(rs.getInt("M_num"));
-			System.out.println(logVO.getMem_num());
-
-			if (rs.getString("M_num").equals(logVO.getMem_num())) {
-				System.out.println("유저 계정입니다.");
-				
-			} else {
-				System.out.println("관리자 계정입니다.");
-				MemManagement MemDAO = new MemManagement();
-				MemDAO.MemManagement();
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			disconnect();
-		}
 	}
 
 }

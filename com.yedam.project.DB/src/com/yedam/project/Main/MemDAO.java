@@ -11,7 +11,7 @@ public interface MemDAO { //데이터베이스 메소드
 	
 	MemVO select(MemVO memVO);
 	
-	void insert(MemVO memVO);
+	void insert(LogVO logVO,MemVO memVO);
 	
 	void update(String name,String email,String add,int num);
 	

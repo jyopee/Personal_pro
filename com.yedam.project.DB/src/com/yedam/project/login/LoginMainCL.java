@@ -2,49 +2,76 @@ package com.yedam.project.login;
 
 import java.util.Scanner;
 
+import com.yedam.project.Main.MemManagement;
+import com.yedam.project.userlec.UserManagement;
+
 public class LoginMainCL {
 
-	private LogVO role;
+	boolean loop = false;
+	private int role;
 	Scanner input = new Scanner(System.in);
 	LogDAO logDAO = LogDAOfunc.getInstance();
 
 	public LoginMainCL() {
+		MenuPrint();
 
-		login();
+	}
+
+	public void MenuPrint() {
+
+		System.out.println("==================================관 리 자==================================");
+		System.out.println("                              시작(Y) / 종료(N)                                 ");
+		System.out.println("==========================================================================");
+
+		MenuSelect();
+
+	}
+
+	public void MenuSelect() {
+
+		while (true) {
+
+			System.out.println("				  Y / N");
+			String menuNo = input.nextLine();
+
+			if (menuNo == "Y") { // 1.회원 등록
+				break;
+			} else if (menuNo == "N") {// 3.회원 전체 조회
+				loop = false;
+			}
+			login();
+		}
+
 	}
 
 	public LogVO login() {
+		LogVO input = LoginInput();
+		LogVO info = logDAO.login(input);
 
-		LogDAO logVO = new LogDAOfunc();
-		LogVO logVO1 = LoginInput();
-		LogVO logVO2 = logVO.login(logVO1);
-
-		if (logVO2 == null) {
+		if (info == null) {
 			login();
-		} else {
+		} else if (info.getMemberId().equals("admin")) {
+			this.role = 0;
+			new MemManagement();
 
-			this.role = logVO2;
-			System.out.println(role);
-			check(logVO2);
+		} else {
+			this.role = 1;
+			new UserManagement();
+
 		}
 
-		return logVO2;
+		return info;
 
 	}
 
 	public LogVO LoginInput() {
-		LogVO logVO = new LogVO();
-		System.out.println("회원 아이디 :");
-		logVO.setMemberId(input.nextLine());
-		System.out.println("비밀번호 :");
-		logVO.setPasswd(input.nextLine());
+		LogVO LogInput = new LogVO();
+		System.out.print("회원 아이디 :");
+		LogInput.setMemberId(input.nextLine());
+		System.out.print("비밀번호 :");
+		LogInput.setPasswd(input.nextLine());
 
-		return logVO;
+		return LogInput;
 	}
 
-	public void check(LogVO logVO2) {
-		LogDAO logVO = new LogDAOfunc();
-		logVO.check(role);
-
-	}
 }

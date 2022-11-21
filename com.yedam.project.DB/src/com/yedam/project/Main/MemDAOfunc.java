@@ -9,8 +9,9 @@ import com.yedam.project.DB.ConnDB;
 import com.yedam.project.login.LogVO;
 
 public class MemDAOfunc extends ConnDB implements MemDAO {
+
 	Scanner input = new Scanner(System.in);
-	private Object update;
+
 	private static MemDAO instance = null; // 인스턴스 생성
 
 	public static MemDAO getInstance() {
@@ -31,12 +32,14 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 
 			int index = 0;
 			while (rs.next()) {
+
 				MemVO memVO = new MemVO();
 				LogVO logVO = new LogVO();
 				logVO.setMemberId("MemberId");
+				logVO.setMemberId("passwd");
 				memVO.setMem_num(rs.getInt(("Mem_num")));
 				memVO.setName(rs.getString("Name"));
-				memVO.setPhoneNum(rs.getString("Phone_num"));
+				memVO.setPhoneNum(rs.getString("PhoneNum"));
 				memVO.setEmail(rs.getString("Email"));
 				memVO.setAddress(rs.getString("Address"));
 
@@ -55,13 +58,14 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 	@Override
 	public MemVO select(MemVO memVO) {
 		MemVO findVO = null;
-		LogVO loVo = null;
 
 		try {
 			connect();
 			stmt = conn.createStatement();
 
-			String sql = "SELECT * from Member WHERE" + memVO.getMem_num() + "OR" + memVO.getName();
+			String sql = "SELECT * from Member WHERE Mem_num =" + memVO.getMem_num() + " AND Name ='" + memVO.getName()
+					+ "'";
+
 			rs = stmt.executeQuery(sql);
 
 			if (rs.next()/* 값이 존재할 경우 */) {
@@ -69,7 +73,7 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 
 				findVO.setMem_num(rs.getInt(("Mem_num")));
 				findVO.setName(rs.getString("Name"));
-				findVO.setPhoneNum(rs.getString("Phone_num"));
+				findVO.setPhoneNum(rs.getString("PhoneNum"));
 				findVO.setEmail(rs.getString("Email"));
 				findVO.setAddress(rs.getString("Address"));
 			}
@@ -83,17 +87,19 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 	}
 
 	@Override
-	public void insert(MemVO memVO) {
+	public void insert(LogVO logVO, MemVO memVO) {
 		try {
 			connect();
-			String sql = "INSERT INTO Member VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO Member VALUES (?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, memVO.getMem_num());
-			pstmt.setString(2, memVO.getName());
-			pstmt.setString(3, memVO.getPhoneNum());
-			pstmt.setString(4, memVO.getEmail());
-			pstmt.setString(5, memVO.getAddress());
+			pstmt.setString(1, logVO.getMemberId());
+			pstmt.setString(2, logVO.getPasswd());
+			pstmt.setInt(3, memVO.getMem_num());
+			pstmt.setString(4, memVO.getName());
+			pstmt.setString(5, memVO.getPhoneNum());
+			pstmt.setString(6, memVO.getEmail());
+			pstmt.setString(7, memVO.getAddress());
 
 			int result = pstmt.executeUpdate();
 
@@ -112,33 +118,23 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 
 	@Override
 	public void update(String name, String email, String add, int num) {
-		boolean check = true;
 
 		int result;
 		try {
-			while (check = true) {
 
-				connect();
+			connect();
 
-				String sql1 = "UPDATE Member SET ? Name,Phone_num,Email,Address WHERE M_num =?";
+			String sql1 = "UPDATE Member SET Name= ? ,Email = ? ,Address = ? WHERE Mem_num =?";
 
-				pstmt = conn.prepareStatement(sql1);
+			pstmt = conn.prepareStatement(sql1);
 
-				System.out.println("수정 완료 :  Y / N");
-				String yes = input.nextLine();
-				if (yes == "Y") {
-					pstmt.setString(1, name);
-					pstmt.setString(3, email);
-					pstmt.setString(4, add);
-					pstmt.setInt(5, num);
-					int update = pstmt.executeUpdate();
+			String yes = input.nextLine();
 
-					check = false;
-
-				} else
-					continue;
-
-			}
+			pstmt.setString(1, name);
+			pstmt.setString(2, email);
+			pstmt.setString(3, add);
+			pstmt.setInt(4, num);
+			int update = pstmt.executeUpdate();
 
 			result = pstmt.executeUpdate();
 
@@ -160,7 +156,7 @@ public class MemDAOfunc extends ConnDB implements MemDAO {
 		try {
 			connect();
 			stmt = conn.createStatement();
-			String sql = "DELETE FROM Member WHERE M_num = " + mem_num;
+			String sql = "DELETE FROM Member WHERE Mem_num = " + mem_num;
 			int result = stmt.executeUpdate(sql); // 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 result 占쏙옙占쏙옙 占쏙옙占쏙옙
 
 			if (result > 0) {

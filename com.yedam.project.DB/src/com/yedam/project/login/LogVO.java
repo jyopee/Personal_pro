@@ -1,9 +1,9 @@
 package com.yedam.project.login;
 
 public class LogVO {
-	private String MemberId; // 회원 번호(아이디)
+	private String MemberId = "admin"; // 회원 번호(아이디)
 	private String passwd; // 회원 이름
-	private int M_num = 0;
+
 
 	public String getMemberId() {
 		return MemberId;
@@ -22,14 +22,13 @@ public class LogVO {
 		this.passwd = passwd;
 	}
 
-	public int getMem_num() {
-		return M_num;
+	@Override
+	public String toString() {
+		return "LogVO [MemberId=" + MemberId + ", passwd=" + passwd + "]";
 	}
 
-	public void setMem_num(int mem_num) {
-		M_num = mem_num;
-	}
-
+	
+	
 	
 	
 	

@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.yedam.project.login.LogVO;
-
-
+import com.yedam.project.login.LoginMainCL;
 
 public class MemManagement {
 	Scanner input = new Scanner(System.in);
@@ -13,19 +12,17 @@ public class MemManagement {
 	MemDAO memDAO = MemDAOfunc.getInstance(); // 인스턴스 생성
 	boolean loop = true;
 
-	public void MemManagement() {
+	public MemManagement() {
 
 		MenuPrint();
 	}
-
-	
 
 	public void MenuPrint() {
 
 		while (true) {
 
 			System.out.println("==================================관 리 자==================================");
-			System.out.println("|1. 회원등록|2.회원전체 조회| 3.회원정보 조회|4. 회원정보 추가 | 5.회원정보 업데이트 | 6.회원정보 삭제 | 7.종료");
+			System.out.println("1. 회원등록|2.회원전체 조회| 3.회원정보 조회 | 4.회원정보 업데이트 | 5.회원정보 삭제 | 6.종료");
 			System.out.println("==========================================================================");
 
 			MenuSelect();
@@ -43,14 +40,22 @@ public class MemManagement {
 		return memVO;
 	}
 
-	
-	
-	
+	private LogVO Input1() {
+		LogVO logVO = new LogVO();
+		System.out.println("회원 아이디");
+		logVO.setMemberId(input.nextLine());
+		System.out.println("회원 비밀번호");
+		logVO.setPasswd(input.nextLine());
+
+		return logVO;
+	}
+
 	private MemVO InsertInput() {
 
 		System.out.println();
 
 		MemVO memVO = new MemVO();
+
 		System.out.print("회원 번호 :");
 		memVO.setMem_num(Integer.parseInt(input.nextLine()));
 		System.out.print("회원 이름 :");
@@ -74,15 +79,13 @@ public class MemManagement {
 			InsertMem();
 		} else if (menuNo == 2) {// 3.회원 전체 조회
 			selectAll();
-		} else if (menuNo == 3) {// 4.회원조회
+		} else if (menuNo == 3) {// 4.회원 검색조회
 			select();
-		} else if (menuNo == 4) {// 5.회원 정보 추가
-			InsertMem();
-		} else if (menuNo == 5) {// 6.회원 정보 업데이트
+		} else if (menuNo == 4) {// 6.회원 정보 업데이트
 			updateMem();
-		} else if (menuNo == 6) {// 7.회원 정보 삭제
+		} else if (menuNo == 5) {// 7.회원 정보 삭제
 			delete();
-		} else if (menuNo == 7) {
+		} else if (menuNo == 6) {
 			end();
 		}
 	}
@@ -118,21 +121,22 @@ public class MemManagement {
 	private void InsertMem() {
 
 		System.out.println("추가 하고자 하는 회원 정보를 입력하세요");
-	
+
+		LogVO logVO = Input1();
 		MemVO memVO = InsertInput();
-		memDAO.insert(memVO);
+		memDAO.insert(logVO, memVO);
 
 	}
 
 	private void updateMem() {
 		System.out.println("변경하고자 하는 회원 번호를 입력하세요");
-		int num = input.nextInt();
+		int num = Integer.parseInt((input.nextLine()));
 		System.out.println("변경하고자 하는 이름을 입력하세요");
-		String name = input.next();
+		String name = input.nextLine();
 		System.out.println("변경하고자 하는 이메일를 입력하세요");
-		String email = input.next();
+		String email = input.nextLine();
 		System.out.println("변경하고자 하는 주소를 입력하세요");
-		String add = input.next();
+		String add = input.nextLine();
 
 		memDAO.update(name, email, add, num);
 
@@ -155,10 +159,10 @@ public class MemManagement {
 	}
 
 	private void end() {
-		System.out.println("===================");
-		System.out.println("프로그램을 종료합니다..");
-		System.out.println("===================");
-		loop = false;
+		System.out.println("======================================");
+		System.out.println("	   프로그램을 종료합니다..			");
+		System.out.println("======================================");
+		new LoginMainCL();
 	}
 
 //		String sql ="UPDATE Member SET  WHERE mem_num ="+ Update.getMem_num() + "and" +Update.getName();
