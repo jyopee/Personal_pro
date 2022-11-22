@@ -31,8 +31,8 @@ public class UserDAOfunc extends ConnDB implements UserDAO {
 			while (rs.next()) {
 
 				UserVO userVO = new UserVO();
-				userVO.setLectNum(rs.getInt(("LecNum")));
-				userVO.setLectName(rs.getString("LecName"));
+				userVO.setLectnum(rs.getInt(("LectNum")));
+				userVO.setLectName(rs.getString("LectName"));
 				userVO.setProfessor(rs.getString("Professor"));
 
 				list.add(userVO);
@@ -80,37 +80,6 @@ public class UserDAOfunc extends ConnDB implements UserDAO {
 	}
 
 	@Override
-	public void update(UserVO userVO, int Stunum) {
-		int result;
-		try {
-
-			connect();
-
-			String sql1 = "UPDATE ClassRegist SET lectNum = ? ,LectName = ? ,Proff = ? WHERE Stunum = ?";
-
-			pstmt = conn.prepareStatement(sql1);
-
-			pstmt.setString(1, userVO.getLectname());
-			pstmt.setInt(2, userVO.getLectnum());
-			pstmt.setInt(3, Stunum);
-			pstmt.setInt(4, Stunum);
-
-			result = pstmt.executeUpdate();
-
-			if (result > 0) {
-				System.out.println("정상적으로 등록되었습니다.");
-			} else {
-				System.out.println("정상적으로 등록되지 않았습니다.");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			disconnect();
-
-		}
-	}
-
-	@Override
 	public void delete(int lectnum) {
 
 		try {
@@ -135,21 +104,21 @@ public class UserDAOfunc extends ConnDB implements UserDAO {
 
 	@Override
 	public UserVO select2(int LectNum) {
-		UserVO findVO = null;
+		UserVO selectVO = null;
 
 		try {
 			connect();
 			stmt = conn.createStatement();
 
-			String sql = "SELECT * from Lectname WHERE LectNum  =" + LectNum;
+			String sql = "SELECT LectNum,LectName,Professor from Lectname WHERE LectNum  =" + LectNum;
 
 			rs = stmt.executeQuery(sql);
 
 			if (rs.next()/* 값이 존재할 경우 */) {
-				findVO = new UserVO();
-				findVO.setLectnum(rs.getInt("LectNum"));
-				findVO.setLectName(rs.getString("LectName"));
-				findVO.setProfessor(rs.getString("Professor"));
+				selectVO = new UserVO();
+				selectVO.setLectnum(rs.getInt("LectNum"));
+				selectVO.setLectName(rs.getString("LectName"));
+				selectVO.setProfessor(rs.getString("Professor"));
 
 			}
 		} catch (Exception e) {
@@ -157,8 +126,62 @@ public class UserDAOfunc extends ConnDB implements UserDAO {
 		} finally {
 			disconnect();
 		}
-		return findVO;
+		return selectVO;
 
+	}
+
+	@Override
+	public void insert(UserVO userVO, MemVO memVO) {
+		try {
+			connect();
+			String sql = "INSERT INTO ClassRegist(Lectnum,Lectname,Proff,Stunum,Stuname) VALUES (?,?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+
+	
+			pstmt.setInt(1, userVO.getLectNum());
+			pstmt.setString(2, userVO.getLectName());
+			pstmt.setString(3, userVO.getProfessor());
+			pstmt.setInt(4, memVO.getMem_num());
+			pstmt.setString(5, memVO.getName());
+
+			int result = pstmt.executeUpdate();
+
+			if (result > 0) {
+				System.out.println("성공적으로 추가되었습니다.");
+			} else {
+				System.out.println("INSERT에 실패했습니다.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+
+	@Override
+	public MemVO select3(int Mem_num) {
+		MemVO memVO = null;
+
+		try {
+			connect();
+			stmt = conn.createStatement();
+
+			String sql = "SELECT Mem_num,Name from Member WHERE Mem_num  =" + Mem_num;
+
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()/* 값이 존재할 경우 */) {
+				memVO = new MemVO();
+				memVO.setMem_num(rs.getInt("Mem_num"));
+				memVO.setName(rs.getString("Name"));
+
+			}
+		} catch (Exception e) {
+
+		} finally {
+			disconnect();
+		}
+		return memVO;
 	}
 
 }

@@ -18,19 +18,14 @@ public class MemManagement {
 
 	public MemManagement() {
 
-		MenuPrint();
+		MenuSelect();
 	}
 
 	public void MenuPrint() {
 
-		while (true) {
-
-			System.out.println("==================================관 리 자==================================");
-			System.out.println("1. 회원등록|2.회원전체 조회| 3.회원정보 조회 | 4.회원정보 업데이트 | 5.회원정보 삭제 | 6.종료");
-			System.out.println("==========================================================================");
-
-			MenuSelect();
-		}
+		System.out.println("==================================관 리 자==================================");
+		System.out.println("1. 회원등록|2.회원전체 조회| 3.회원정보 조회 | 4.회원정보 업데이트 | 5.회원정보 삭제 | 6.종료");
+		System.out.println("==========================================================================");
 
 	}
 
@@ -76,21 +71,26 @@ public class MemManagement {
 
 	public void MenuSelect() {
 
-		System.out.println("메뉴를 선택하세요");
-		int menuNo = Integer.parseInt(input.nextLine());
+		while (loop == true) {
 
-		if (menuNo == 1) { // 1.회원 등록
-			InsertMem();
-		} else if (menuNo == 2) {// 3.회원 전체 조회
-			selectAll();
-		} else if (menuNo == 3) {// 4.회원 검색조회
-			select();
-		} else if (menuNo == 4) {// 6.회원 정보 업데이트
-			updateMem();
-		} else if (menuNo == 5) {// 7.회원 정보 삭제
-			delete();
-		} else if (menuNo == 6) {
-			end();
+			MenuPrint();
+			
+			System.out.println("메뉴를 선택하세요");
+			int menuNo = Integer.parseInt(input.nextLine());
+
+			if (menuNo == 1) { // 1.회원 등록
+				InsertMem();
+			} else if (menuNo == 2) {// 3.회원 전체 조회
+				selectAll();
+			} else if (menuNo == 3) {// 4.회원 검색조회
+				select();
+			} else if (menuNo == 4) {// 6.회원 정보 업데이트
+				updateMem();
+			} else if (menuNo == 5) {// 7.회원 정보 삭제
+				delete();
+			} else if (menuNo == 6) {
+				end();
+			}
 		}
 	}
 
@@ -166,10 +166,14 @@ public class MemManagement {
 	}
 
 	private void end() {
+
+		loop = false;
 		System.out.println("======================================");
 		System.out.println("	   프로그램을 종료합니다..			");
 		System.out.println("======================================");
+		
 		new LoginMainCL();
+
 	}
 
 //		String sql ="UPDATE Member SET  WHERE mem_num ="+ Update.getMem_num() + "and" +Update.getName();

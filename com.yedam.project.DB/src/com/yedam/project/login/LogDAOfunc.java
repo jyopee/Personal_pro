@@ -33,6 +33,7 @@ public class LogDAOfunc extends ConnDB implements LogDAO {
 					loginInfo.setName(rs.getString("Name"));
 
 					System.out.println("로그인 되었습니다.");
+					System.out.println();
 
 				} else {
 					System.out.println("비밀번호가 일치하지 않습니다.");
@@ -48,33 +49,6 @@ public class LogDAOfunc extends ConnDB implements LogDAO {
 		}
 		return loginInfo;
 
-	}
-
-	@Override
-	public void Save(LogVO logVO) {
-		try {
-			connect();
-			String sql = "INSERT INTO ClassRegist VALUES (?,?,?,?,?)";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, null);
-			pstmt.setString(2, null);
-			pstmt.setString(3, null);
-			pstmt.setInt(4, logVO.getMem_num());
-			pstmt.setString(5, logVO.getName());
-
-			int result = pstmt.executeUpdate();
-
-			if (result > 0) {
-				System.out.println("성공적으로 추가되었습니다.");
-			} else {
-				System.out.println("INSERT에 실패했습니다.");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			disconnect();
-		}
 	}
 
 }

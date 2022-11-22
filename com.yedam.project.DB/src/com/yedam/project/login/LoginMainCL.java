@@ -16,7 +16,7 @@ public class LoginMainCL {
 	LogDAO logDAO = LogDAOfunc.getInstance();
 
 	public LoginMainCL() {
-		MenuPrint();
+		MenuSelect();
 
 	}
 
@@ -26,23 +26,27 @@ public class LoginMainCL {
 		System.out.println("                              시작(Y) / 종료(N)                                 ");
 		System.out.println("==========================================================================");
 
-		MenuSelect();
+		
 
 	}
 
 	public void MenuSelect() {
 
 		while (true) {
+			
+			MenuPrint();
 
 			System.out.println("				  Y / N");
 			String menuNo = input.nextLine();
 
-			if (menuNo == "Y") { // 1.회원 등록
+			if (menuNo.equals("Y")) { // 1.회원 등록
+				login();
+			} else if (menuNo.equals("N")) {// 3.회원 전체 조회
+				System.out.println("수고하겼습니다.");
 				break;
-			} else if (menuNo == "N") {// 3.회원 전체 조회
-				loop = false;
 			}
-			login();
+			
+				
 		}
 
 	}
@@ -50,9 +54,6 @@ public class LoginMainCL {
 	public LogVO login() {
 		LogVO input = LoginInput();
 		LogVO info = logDAO.login(input);
-		System.out.println(info);
-
-		Save(info);
 
 		if (info == null) {
 			login();
@@ -70,18 +71,13 @@ public class LoginMainCL {
 
 	}
 
-	public void Save(LogVO info) {
-
-		logDAO.Save(info);
-	}
-
 	public LogVO LoginInput() {
 		LogVO LogInput = new LogVO();
 		System.out.print("회원 아이디 :");
 		LogInput.setMemberId(input.nextLine());
 		System.out.print("비밀번호 :");
 		LogInput.setPasswd(input.nextLine());
-		System.out.println(LogInput);
+
 
 		return LogInput;
 	}
